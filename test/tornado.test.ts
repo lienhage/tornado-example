@@ -105,8 +105,8 @@ describe("Tornado #withdraw", () => {
       nullifierHash: nullifierHash,
       nullifier: deposit.nullifier,
       relayer: ethers.constants.AddressZero,
-      recipient: ethers.constants.AddressZero,
-      fee,
+      recipient: signers[1].address,
+      fee: fee,
       refund: BigInt(0),
       secret: deposit.secret.toString(),
       pathElements: merkleProof.pathElements,
@@ -121,16 +121,16 @@ describe("Tornado #withdraw", () => {
       toFixedHex(tree.root()),
       toFixedHex(nullifierHash.toString()),
       signers[1].address,
-      signers[0].address,
-      0,
-      0,
+      ethers.constants.AddressZero,
+      fee,
+      BigInt(0)
     ];
 
     const before = await provider.getBalance(signers[1].address);
     await tornado.withdraw(...proofArgs, ...args);
     const after = await provider.getBalance(signers[1].address);
 
-    expect(after.sub(before)).to.equal(privateTransactionAmount);
+    expect(after.sub(before)).to.equal(privateTransactionAmount.sub(fee));
     expect(await tornado.isSpent(toFixedHex(nullifierHash.toString()))).to.equal(true);
     // should prevent double spend
     await expect(tornado.withdraw(...proofArgs, ...args)).to.be.revertedWith("The note has been already spent");

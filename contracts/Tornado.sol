@@ -95,8 +95,8 @@ abstract contract Tornado is MerkleTreeWithHistory, ReentrancyGuard {
     require(isKnownRoot(_root), "Cannot find your merkle root"); // Make sure to use a recent one
     require(
       verifier.verifyProof(
-        a, b, c, input
-        // [uint256(_root), uint256(_nullifierHash), uint256(_recipient), uint256(_relayer), _fee, _refund]
+        a, b, c,
+        [uint256(_root), uint256(_nullifierHash), uint256(_recipient), uint256(_relayer), _fee, _refund]
       ),
       "Invalid withdraw proof"
     );
