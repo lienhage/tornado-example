@@ -1,5 +1,5 @@
 # Tornado-example
-This project is forked from [Tornado Cash](https://tornado.cash/) with slightly changes:
+This project is forked from [Tornado Cash](https://tornado.cash/) with slight changes:
 
 - built with hardhat and typescript
 - circomlib is updated to 0.5.2
